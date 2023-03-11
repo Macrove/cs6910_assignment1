@@ -31,15 +31,55 @@ layers = [
     }
 ]
 optimizers = {
-    "batch_gradient_descent" : {
-        "name": "batch_gradient_descent",
+    "sgd" : {
+        "name": "sgd",
         "params": {
             "eta" : 0.0001
         }
+    },
+    "momentum" : {
+        "name": "momentum",
+        "params": {
+            "eta" : 0.0001,
+            "gamma": 0.0001
+        }
+    },
+    "nag" : {
+        "name": "nag",
+        "params": {
+            "eta" : 0.0001,
+            "gamma": 0.01
+        }
+    },
+    "rmsprop" : {
+        "name": "rmsprop",
+        "params": {
+            "eta" : 0.0001,
+            "beta": 0.9,
+            "epsilon": 0.0001
+        }
+    },
+    "adam" : {
+        "name": "adam",
+        "params": {
+            "eta" : 0.0001,
+            "beta1": 0.9,
+            "beta2": 0.6,
+            "epsilon": 0.00001
+        }
+    },
+    "nadam" : {
+        "name": "nadam",
+        "params": {
+            "eta" : 0.0001,
+            "beta1": 0.9,
+            "beta2": 0.6,
+            "epsilon": 0.00001
+        }
     }
 }
-optimizer = optimizers["batch_gradient_descent"]
+optimizer = optimizers["sgd"]
 nn = NeuralNetwork(X_train=x_train_, y_train=y_train_, X_val=x_val_, y_val=y_val_,
                    layers=layers, loss_func="cross_entropy", batch_size=1000,
-                   n_epoch=10, shuffle=True, optimizer=optimizer["name"], optimizer_params=optimizer["params"])
+                   n_epoch=10, shuffle=True, optimizer=optimizer["name"], optimizer_params=optimizer["params"], initialization="Xavier", decay=0.00005)
 nn.fit()
