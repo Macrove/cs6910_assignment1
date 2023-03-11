@@ -2,7 +2,7 @@ import numpy as np
 from keras.datasets import fashion_mnist
 
 # function to prepare dataset
-def prepare_dataset():
+def prepare_dataset(dataset_type):
     
     print("Downloading Fashion MNIST dataset:", end=" ")
     (x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()

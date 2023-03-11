@@ -5,6 +5,7 @@ from copy import deepcopy
 from optimizers import Sgd, Momentum, Nag, Rmsprop, Adam, Nadam
 from utils.accuracy import accuracy
 from activation_funcs import Sigmoid, Softmax, ReLu, Identity, Tanh
+import wandb
 
 loss_funcs = {
         "cross_entropy": CrossEntropy()
@@ -28,7 +29,7 @@ activation_funcs = {
 }
 
 class NeuralNetwork():
-    def __init__(self, X_train, y_train, X_val, y_val, layers, loss_func, batch_size, n_epoch, shuffle, optimizer, optimizer_params, initialization, decay):
+    def __init__(self, X_train, y_train, X_val, y_val, layers, loss_func, batch_size, n_epoch, shuffle, optimizer, optimizer_params, initialization, decay, use_wandb):
         self.X_train = X_train
         self.y_train = y_train
         self.X_val = X_val
@@ -41,6 +42,7 @@ class NeuralNetwork():
         self.n_epochs = n_epoch
         self.shuffle = shuffle
         self.decay = decay
+        self.use_wandb = use_wandb
         self.initialize_layers(X_train.shape[1], layers, optimizer, optimizer_params)
         print("Training data shape - X_train - {}, y_train - {}".format(X_train.shape, y_train.shape))
         print("Validation data shape - X_val - {}, y_val - {}".format(X_val.shape, y_val.shape))
@@ -162,28 +164,42 @@ class NeuralNetwork():
 
             print("===============================================================>\t", end="")
 
-            train_acc, val_acc = self.get_accuracy()
-            print("training acc = {}, val_acc = {}".format(round(train_acc, 3), round(val_acc, 3)))
+            train_acc, val_acc, train_loss, val_loss = self.get_accuracy_and_loss()
+            if self.use_wandb:
+                wandb.log({
+                    "epoch": epoch+1,
+                    "training_acc": train_acc,
+                    "val_acc": val_acc,
+                    "train_loss": train_loss,
+                    "val_loss": val_loss
+                })
+            print("training acc = {}, val_acc = {}, train_loss = {}, val_loss = {}".format(
+                round(train_acc, 3), round(val_acc, 3), round(train_loss,3), round(val_loss, 3)))
 
 
-    def get_accuracy(self):
+    def get_accuracy_and_loss(self):
         
         y_train_pred = []
         y_train = self.y_train_non_enc
+        train_loss = 0
         for idx in range(self.X_train.shape[0]):
-            probabs = self.forward_prop(self.X_train[idx])     
+            probabs = self.forward_prop(self.X_train[idx])
+            train_loss += self.loss_func.compute(self.y_train[idx], probabs)
             y_train_pred.append(np.argmax(probabs))
 
         y_train_pred = np.array(y_train_pred)
         train_acc = accuracy(y_train_pred, y_train)
         
+        
         y_val_pred = []
         y_val = self.y_val_non_enc
+        val_loss = 0
         for idx in range(self.X_val.shape[0]):
             probabs = self.forward_prop(self.X_val[idx])     
+            val_loss += self.loss_func.compute(self.y_val[idx], probabs)
             y_val_pred.append(np.argmax(probabs))
 
         y_val_pred = np.array(y_val_pred)
         val_acc = accuracy(y_val_pred, y_val)
 
-        return train_acc, val_acc
+        return train_acc, val_acc, train_loss/self.X_train.shape[0], val_loss/self.X_val.shape[0]
