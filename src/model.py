@@ -44,6 +44,7 @@ class NeuralNetwork():
         self.decay = decay
         self.use_wandb = use_wandb
         self.initialize_layers(X_train.shape[1], layers, optimizer, optimizer_params)
+        print("Neural Network prepared\n")
         print("Training data shape - X_train - {}, y_train - {}".format(X_train.shape, y_train.shape))
         print("Validation data shape - X_val - {}, y_val - {}".format(X_val.shape, y_val.shape))
 
@@ -51,7 +52,6 @@ class NeuralNetwork():
         np.random.seed(42)
         
         # self.layers = [input_layer, hidden_layer_1, hidden_layer_2, ..., output_layer]
-        print("Initializing layers")
         self.layers = []
         print("layers:")
         
@@ -92,7 +92,6 @@ class NeuralNetwork():
                                                         "w_shape": self.layers[-1].w.shape,
                                                         "b_shape": self.layers[-1].b.shape})
 
-        print("Neural Network prepared\n")
 
 
     def forward_prop(self, x):
@@ -162,7 +161,7 @@ class NeuralNetwork():
                 for idx in range(1, len(self.layers)):
                     self.layers[idx].w, self.layers[idx].b = self.layers[idx].optimizer.get_update(self.layers[idx].w, self.layers[idx].b)
 
-            print("===============================================================>\t", end="")
+            print("========================================>\t", end="")
 
             train_acc, val_acc, train_loss, val_loss = self.get_accuracy_and_loss()
             if self.use_wandb:
