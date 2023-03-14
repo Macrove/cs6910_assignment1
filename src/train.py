@@ -1,14 +1,11 @@
-from model import NeuralNetwork
+from nn.model import NeuralNetwork
 from utils.prepare_dataset import prepare_dataset
-from utils.train_test_split import train_test_split
+from utils.preprocess import train_test_split
 import numpy as np
-from utils.normalize_data import normalize_data
-from utils.defaults import optimizers_map, default_model_params, default_dataset
+from default_params import default_dataset, default_model_params, optimizers_map
 import wandb
 
-
 def main(use_wandb = True):
-
 
     optimizer = optimizers_map[default_model_params["optimizer"]]
     n_epoch = default_model_params["n_epoch"]
@@ -72,4 +69,4 @@ def main(use_wandb = True):
     nn.fit()
 
 
-# main(use_wandb=False)
+main(use_wandb=False)

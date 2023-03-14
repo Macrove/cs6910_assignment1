@@ -1,3 +1,15 @@
+default_model_params = {
+    "optimizer" : "sgd",
+    "n_epoch" : 10,
+    "n_hidden_layers" : 3,
+    "size_hidden_layer" : 64,
+    "weight_decay" : 0.0000005,
+    "batch_size" : 1000,
+    "weight_initialization" : "Xavier",
+    "activation_func" : "sigmoid"
+}
+
+default_dataset = 'fashion_mnist'
 
 optimizers_map = {
     "sgd" : {
@@ -47,16 +59,3 @@ optimizers_map = {
         }
     }
 }
-
-default_model_params = {
-    "optimizer" : "sgd",
-    "n_epoch" : 10,
-    "n_hidden_layers" : 3,
-    "size_hidden_layer" : 64,
-    "weight_decay" : 0.0000005,
-    "batch_size" : 1000,
-    "weight_initialization" : "Xavier",
-    "activation_func" : "sigmoid"
-}
-
-default_dataset = 'fashion_mnist'

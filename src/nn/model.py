@@ -1,32 +1,11 @@
 import numpy as np
-from layer import Input_layer, Hidden_layer, Output_layer
-from loss_funcs import CrossEntropy
+from nn.layer.layer import Input_layer, Hidden_layer, Output_layer
 from copy import deepcopy
-from optimizers import Sgd, Momentum, Nag, Rmsprop, Adam, Nadam
-from utils.accuracy import accuracy
-from activation_funcs import Sigmoid, Softmax, ReLu, Identity, Tanh
+from utils.metrics import accuracy
 import wandb
-
-loss_funcs = {
-        "cross_entropy": CrossEntropy()
-    }
-
-optimizers = {
-        "sgd": Sgd(),
-        "momentum": Momentum(),
-        "nag": Nag(),
-        "adam": Adam(),
-        "rmsprop": Rmsprop(),
-        "nadam": Nadam()
-    }
-
-activation_funcs = {
-    "sigmoid": Sigmoid(),
-    "softmax": Softmax(),
-    "ReLU": ReLu(),
-    "identity": Identity(),
-    "tanh": Tanh()
-}
+from nn.loss.map import loss_func_map
+from nn.optimizer.map import optimizer_map
+from nn.activation.map import activation_func_map
 
 class NeuralNetwork():
     def __init__(self, X_train, y_train, X_val, y_val, layers, loss_func, batch_size, n_epoch, shuffle, optimizer, optimizer_params, initialization, decay, use_wandb):
@@ -37,7 +16,7 @@ class NeuralNetwork():
         self.y_train_non_enc = np.array([np.argmax(y_train[idx]) for idx in range(y_train.shape[0])])
         self.y_val_non_enc = np.array([np.argmax(y_val[idx]) for idx in range(y_val.shape[0])])
         self.initialization = initialization
-        self.loss_func = deepcopy(loss_funcs[loss_func])
+        self.loss_func = deepcopy(loss_func_map[loss_func])
         self.batch_size = batch_size
         self.n_epochs = n_epoch
         self.shuffle = shuffle
@@ -67,7 +46,7 @@ class NeuralNetwork():
             else:
                 name = "hidden_layer_{}".format(layer_idx)
             
-            self.layers.append(Hidden_layer(name, layer['size'], deepcopy(activation_funcs[layer['activation_func']])))
+            self.layers.append(Hidden_layer(name, layer['size'], deepcopy(activation_func_map[layer['activation_func']])))
             if self.initialization == "random":
                 self.layers[layer_idx].w = np.random.normal(loc=0,scale=1.0, size=(self.layers[layer_idx].size, self.layers[layer_idx - 1].size))/100
                 self.layers[layer_idx].b = np.random.normal(loc=0, scale=1.0, size=self.layers[layer_idx].size)/100
@@ -75,7 +54,7 @@ class NeuralNetwork():
                 self.layers[layer_idx].w = np.random.normal(loc=0,scale=np.power(2/(self.layers[layer_idx].size + self.layers[layer_idx-1].size),0.5), size=(self.layers[layer_idx].size, self.layers[layer_idx - 1].size))
                 self.layers[layer_idx].b = np.random.normal(loc=0,scale=np.power(2/(self.layers[layer_idx].size + self.layers[layer_idx-1].size),0.5), size=self.layers[layer_idx].size)
                 
-            self.layers[layer_idx].optimizer = deepcopy(optimizers[optimizer])
+            self.layers[layer_idx].optimizer = deepcopy(optimizer_map[optimizer])
             self.layers[layer_idx].optimizer.set_params({**optimizer_params,
                                                          "w_shape": self.layers[layer_idx].w.shape,
                                                          "b_shape": self.layers[layer_idx].b.shape,
@@ -84,10 +63,10 @@ class NeuralNetwork():
             layer_idx += 1
         
         #output layer
-        self.layers.append(Output_layer(layers[-1]['size'], deepcopy(activation_funcs[layers[-1]['activation_func']]), layers[-1]['name']))
+        self.layers.append(Output_layer(layers[-1]['size'], deepcopy(activation_func_map[layers[-1]['activation_func']]), layers[-1]['name']))
         self.layers[-1].w = np.random.normal(loc=0, scale=1.0, size=(self.layers[-1].size, self.layers[-2].size))/100
         self.layers[-1].b = np.random.normal(loc=0, scale=1.0, size=self.layers[-1].size)/100
-        self.layers[-1].optimizer = deepcopy(optimizers[optimizer])
+        self.layers[-1].optimizer = deepcopy(optimizer_map[optimizer])
         self.layers[-1].optimizer.set_params({**optimizer_params,
                                                         "w_shape": self.layers[-1].w.shape,
                                                         "b_shape": self.layers[-1].b.shape})

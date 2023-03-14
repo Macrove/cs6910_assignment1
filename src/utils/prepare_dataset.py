@@ -1,6 +1,6 @@
 import numpy as np
 from keras.datasets import fashion_mnist, mnist
-from utils.normalize_data import normalize_data
+from utils.preprocess import normalize_data
 
 # function to prepare dataset
 def prepare_dataset(dataset_type: str, normalize: bool = False):
