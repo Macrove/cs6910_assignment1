@@ -53,7 +53,7 @@ class NeuralNetwork():
         
         # self.layers = [input_layer, hidden_layer_1, hidden_layer_2, ..., output_layer]
         self.layers = []
-        print("layers:")
+        print("hidden layers:")
         
         #input layer
         self.layers.append(Input_layer(input_size, layers[0]['name']))

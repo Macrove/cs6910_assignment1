@@ -23,7 +23,8 @@ sweep_configuration = {
         'beta': {'min': 0.5, 'max': 0.99},
         'beta1': {'min': 0.5, 'max': 0.99},
         'beta2': {'min': 0.5, 'max': 0.99},
-        'epsilon': {'min': 1e-8, 'max': 1e-4}
+        'epsilon': {'min': 1e-8, 'max': 1e-4},
+        'gamma': {'min': 1e-8, 'max': 1e-3}
     }
 }
 
