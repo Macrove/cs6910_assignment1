@@ -7,7 +7,7 @@ default_model_params = {
     "batch_size" : 128,
     "weight_initialization" : "Xavier",
     "activation_func" : "ReLU",
-    "loss_func": "cross_entropy"
+    "loss_func": "mean_squared_error"
 }
 
 default_dataset = 'fashion_mnist'

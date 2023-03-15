@@ -88,7 +88,7 @@ class NeuralNetwork():
 
     def backward_prop(self, y):
 
-        self.layers[-1].a_grad = self.loss_func.grad(y, self.layers[-1].h)
+        self.layers[-1].a_grad = self.loss_func.grad_wrt_a(y, self.layers[-1].h)
 
         for k in range(len(self.layers)-1, 0, -1):
 
