@@ -1,17 +1,23 @@
 default_model_params = {
-    "optimizer" : "sgd",
-    "n_epoch" : 10,
-    "n_hidden_layers" : 3,
+    "optimizer" : "nadam",
+    "n_epoch" : 11,
+    "n_hidden_layers" : 4,
     "size_hidden_layer" : 64,
-    "weight_decay" : 0.0000005,
-    "batch_size" : 1000,
+    "weight_decay" : 0,
+    "batch_size" : 128,
     "weight_initialization" : "Xavier",
-    "activation_func" : "sigmoid"
+    "activation_func" : "ReLU",
+    "loss_func": "cross_entropy"
 }
 
 default_dataset = 'fashion_mnist'
 
-optimizers_map = {
+default_credentials = {
+    "wandb_project": "cs6910-assignment-1",
+    "wandb_entity": "me19b110"
+}
+
+optimizer_param_map = {
     "sgd" : {
         "name": "sgd",
         "default_params": {
@@ -52,10 +58,10 @@ optimizers_map = {
     "nadam" : {
         "name": "nadam",
         "default_params": {
-            "eta" : 0.0001,
-            "beta1": 0.9,
-            "beta2": 0.6,
-            "epsilon": 0.00001
+            "eta" : 0.0002392,
+            "beta1": 0.6333,
+            "beta2": 0.8638,
+            "epsilon": 0.0000312
         }
     }
 }
