@@ -113,7 +113,6 @@ class NeuralNetwork():
         indices = np.arange(0, self.X_train.shape[0], 1)
 
         for epoch in range(self.n_epochs):
-            print("Epoch {} - ".format(epoch+1), end=" ")
             
             num_batches = int(self.X_train.shape[0]/self.batch_size)
 
@@ -140,8 +139,6 @@ class NeuralNetwork():
                 for idx in range(1, len(self.layers)):
                     self.layers[idx].w, self.layers[idx].b = self.layers[idx].optimizer.get_update(self.layers[idx].w, self.layers[idx].b)
 
-            print("========================================>\t", end="")
-
             train_acc, val_acc, train_loss, val_loss = self.get_accuracy_and_loss()
             if self.use_wandb:
                 wandb.log({
@@ -151,8 +148,11 @@ class NeuralNetwork():
                     "train_loss": train_loss,
                     "val_loss": val_loss
                 })
+
+            print("Epoch {} - ================>\t".format(epoch+1), end=" ")
+
             print("training acc = {}, val_acc = {}, train_loss = {}, val_loss = {}".format(
-                round(train_acc, 3), round(val_acc, 3), round(train_loss,3), round(val_loss, 3)))
+                round(train_acc, 4), round(val_acc, 4), round(train_loss,4), round(val_loss, 4)))
 
 
     def get_accuracy_and_loss(self):
