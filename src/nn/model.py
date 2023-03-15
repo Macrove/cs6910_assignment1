@@ -86,15 +86,10 @@ class NeuralNetwork():
         return self.layers[-1].h
 
 
-    def backward_prop(self, y, y_pred_probabs):
+    def backward_prop(self, y):
 
-        #compute output gradient
-        # if self.loss_func == "cross_entropy":
-        self.layers[-1].a_grad = -(y - self.layers[-1].h)
-        # elif self.loss_func == "squared_error_loss":
-        #     softmax_loss = self.layers[-1].activation_func.compute(y_pred_probabs)
-        #     y_pred = np.argmax(y_pred_probabs)
-        #     self.layers[-1].a_grad = 2 * (y_pred - np.argmax(y)) * (softmax_loss[y_pred] - softmax_loss[y_pred]*y[y_pred])
+        self.layers[-1].a_grad = self.loss_func.grad(y, self.layers[-1].h)
+
         for k in range(len(self.layers)-1, 0, -1):
 
             #compute gradient wrt parameters    
@@ -111,7 +106,6 @@ class NeuralNetwork():
     def fit(self):
 
         indices = np.arange(0, self.X_train.shape[0], 1)
-
         for epoch in range(self.n_epochs):
             
             num_batches = int(self.X_train.shape[0]/self.batch_size)
@@ -127,10 +121,9 @@ class NeuralNetwork():
                 
                 #computing gradients
                 batch_indices = indices[step * self.batch_size : (step + 1) * self.batch_size]
-                # y_pred_probabs = self.forward_prop(self.X_train[batch_indices[0]])
                 for idx in batch_indices[0:]:
-                    y_pred_probabs = self.forward_prop(self.X_train[idx])
-                    self.backward_prop(self.y_train[idx], y_pred_probabs)
+                    self.forward_prop(self.X_train[idx])
+                    self.backward_prop(self.y_train[idx])
                     for idx in range(1, len(self.layers)):
                         self.layers[idx].optimizer.del_w += self.layers[idx].w_grad
                         self.layers[idx].optimizer.del_b += self.layers[idx].b_grad
