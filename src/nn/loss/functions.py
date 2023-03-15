@@ -5,7 +5,7 @@ class CrossEntropy():
         pass
     
     def compute(self, y, probabs):
-        return -np.sum(y * probabs)
+        return -np.log(np.sum(y * probabs))
 
     # def differentiate(self, Y, )
         
