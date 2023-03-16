@@ -16,6 +16,7 @@ class Softmax():
         pass
     
     def compute(self, x):
+        x -= np.max(x)
         terms = np.exp(x)
         return terms/np.sum(terms)
     

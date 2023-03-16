@@ -7,7 +7,7 @@ default_model_params = {
     "batch_size" : 128,
     "weight_initialization" : "Xavier",
     "activation_func" : "ReLU",
-    "loss_func": "mean_squared_error"
+    "loss_func": "cross_entropy"
 }
 
 default_dataset = 'fashion_mnist'
@@ -27,15 +27,15 @@ optimizer_param_map = {
     "momentum" : {
         "name": "momentum",
         "default_params": {
-            "eta" : 0.0001,
-            "gamma": 0.0001
+            "eta" : 0.00001,
+            "gamma": 0.000001
         }
     },
     "nag" : {
         "name": "nag",
         "default_params": {
-            "eta" : 0.0001,
-            "gamma": 0.01
+            "eta" : 0.00001,
+            "gamma": 0.000001
         }
     },
     "rmsprop" : {
@@ -52,16 +52,16 @@ optimizer_param_map = {
             "eta" : 0.0001,
             "beta1": 0.9,
             "beta2": 0.6,
-            "epsilon": 0.00001
+            "epsilon": 1e-8
         }
     },
     "nadam" : {
         "name": "nadam",
         "default_params": {
-            "eta" : 0.0002392,
+            "eta" : 0.00004,
             "beta1": 0.6333,
             "beta2": 0.8638,
-            "epsilon": 0.0000312
+            "epsilon": 1e-8
         }
     }
 }

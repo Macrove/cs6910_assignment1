@@ -119,8 +119,12 @@ class NeuralNetwork():
 
             for step in range(num_batches):
                 
-                #computing gradients
                 batch_indices = indices[step * self.batch_size : (step + 1) * self.batch_size]
+                
+                #partial updates
+                for idx in range(1, len(self.layers)):
+                    self.layers[idx].w, self.layers[idx].b = self.layers[idx].optimizer.get_partial_update(self.layers[idx].w, self.layers[idx].b)
+
                 for idx in batch_indices[0:]:
                     self.forward_prop(self.X_train[idx])
                     self.backward_prop(self.y_train[idx])

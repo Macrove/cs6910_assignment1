@@ -31,7 +31,7 @@ parser.add_argument("-w_i", "--weight_init", choices=parser_choices["initializat
 parser.add_argument("-nhl", "--num_layers", default=default_model_params["n_hidden_layers"], type=int)
 parser.add_argument("-sz", "--hidden_size", default=default_model_params["size_hidden_layer"], type=int)
 parser.add_argument("-a", "--activation", choices=parser_choices["activation"], default=default_model_params["activation_func"])
-parser.add_argument("-wb", "--use_wandb", choices=[0, 1], default=1, type=int)
+parser.add_argument("-wb", "--use_wandb", choices=[0, 1], default=0, type=int)
 
 args = parser.parse_args()
 
