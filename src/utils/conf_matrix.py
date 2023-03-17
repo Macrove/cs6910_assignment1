@@ -1,9 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def accuracy(y_pred, y):
-    return np.sum(y_pred == y)/y_pred.shape[0]
-
 def confusion_matrix(y_pred, y, title):
     classes = np.unique(y)
     conf_mat = np.zeros((len(classes), len(classes)), dtype=np.uint32)
@@ -25,7 +22,7 @@ def confusion_matrix(y_pred, y, title):
     title_text = "{}_Confusion Matrix".format(title)
     ax.set_title(title_text)
     fig.tight_layout()
-    # plt.savefig(title_text)
+    plt.savefig(title_text)
     plt.show()
     return conf_mat
             

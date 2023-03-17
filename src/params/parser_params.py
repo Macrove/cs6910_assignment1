@@ -5,6 +5,6 @@ parser_choices = {
     "loss": ["mean_squared_error", "cross_entropy"],
     "optimizer": ["sgd", "momentum", "nag", "rmsprop", "adam", "nadam"],
     "initialization":  ["random", "Xavier"],
-    "activation": ["identity", "sigmoid", "tanh", "ReLU"]
+    "activation": ["identity", "sigmoid", "tanh", "ReLU", "LeakyReLU"]
     
 }
