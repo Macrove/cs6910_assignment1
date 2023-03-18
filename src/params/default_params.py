@@ -1,12 +1,12 @@
 default_model_params = {
     "optimizer" : "nadam",
-    "n_epoch" : 11,
+    "n_epoch" : 15,
     "n_hidden_layers" : 4,
-    "size_hidden_layer" : 64,
-    "weight_decay" : 0,
-    "batch_size" : 128,
+    "size_hidden_layer" : 264,
+    "weight_decay" : 1e-9,
+    "batch_size" : 32,
     "weight_initialization" : "Xavier",
-    "activation_func" : "ReLU",
+    "activation_func" : "LeakyReLU",
     "loss_func": "cross_entropy"
 }
 
@@ -21,47 +21,47 @@ optimizer_param_map = {
     "sgd" : {
         "name": "sgd",
         "default_params": {
-            "eta" : 0.0001
+            "eta" : 0.000005618
         }
     },
     "momentum" : {
         "name": "momentum",
         "default_params": {
-            "eta" : 0.00001,
-            "gamma": 0.000001
+            "eta" : 0.000001,
+            "gamma": 0.0000039
         }
     },
     "nag" : {
         "name": "nag",
         "default_params": {
-            "eta" : 0.00001,
-            "gamma": 0.000001
+            "eta" : 0.0000086,
+            "gamma": 0.0000021
         }
     },
     "rmsprop" : {
         "name": "rmsprop",
         "default_params": {
-            "eta" : 0.0001,
-            "beta": 0.9,
-            "epsilon": 0.0001
+            "eta" : 0.000006019,
+            "beta": 0.5123,
+            "epsilon": 1e-7
         }
     },
     "adam" : {
         "name": "adam",
         "default_params": {
-            "eta" : 0.0001,
-            "beta1": 0.9,
-            "beta2": 0.6,
-            "epsilon": 1e-8
+            "eta" : 0.00001,
+            "beta1": 0.7483,
+            "beta2": 0.7838,
+            "epsilon": 1e-9
         }
     },
     "nadam" : {
         "name": "nadam",
         "default_params": {
-            "eta" : 0.00004,
-            "beta1": 0.6333,
-            "beta2": 0.8638,
-            "epsilon": 1e-8
+            "eta" : 0.000062,
+            "beta1": 0.7803,
+            "beta2": 0.895,
+            "epsilon": 1e-9
         }
     }
 }

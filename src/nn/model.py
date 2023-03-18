@@ -6,6 +6,7 @@ import wandb
 from nn.loss.map import loss_func_map
 from nn.optimizer.map import optimizer_map
 from nn.activation.map import activation_func_map
+import time
 
 class NeuralNetwork():
     def __init__(self, X_train, y_train, X_val, y_val, layers, loss_func, batch_size, n_epoch, shuffle, optimizer, optimizer_params, initialization, decay, use_wandb):
@@ -107,6 +108,7 @@ class NeuralNetwork():
 
         indices = np.arange(0, self.X_train.shape[0], 1)
         for epoch in range(self.n_epochs):
+            start = time.time()
             
             num_batches = int(self.X_train.shape[0]/self.batch_size)
 
@@ -146,10 +148,18 @@ class NeuralNetwork():
                     "val_loss": val_loss
                 })
 
+            end = time.time()
+            
             print("Epoch {} - ================>\t".format(epoch+1), end=" ")
 
-            print("training acc = {}, val_acc = {}, train_loss = {}, val_loss = {}".format(
-                round(train_acc, 4), round(val_acc, 4), round(train_loss,4), round(val_loss, 4)))
+            print("training acc = {:0.4f}, val_acc = {:0.4f}, train_loss = {:0.4f}, val_loss = {:0.4f}, time_taken = {:0.3f}s".format(train_acc, val_acc, train_loss, val_loss, end - start))
+
+    def predict(self, X_test):
+        y_pred = np.zeros(X_test.shape[0])
+        for idx, x in enumerate(X_test):
+            y_pred[idx] = np.argmax(self.forward_prop(x))
+
+        return y_pred
 
 
     def get_accuracy_and_loss(self):

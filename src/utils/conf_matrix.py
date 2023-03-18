@@ -1,7 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import wandb
 
-def confusion_matrix(y_pred, y, title):
+def confusion_matrix(y_pred, y, title, use_wandb):
+    y_pred = np.array(y_pred, dtype=np.int64)
+    y = np.array(y, dtype=np.int64)
     classes = np.unique(y)
     conf_mat = np.zeros((len(classes), len(classes)), dtype=np.uint32)
     y_pred -= np.min(classes)

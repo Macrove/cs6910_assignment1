@@ -39,7 +39,7 @@ class LeakyReLu(Activation):
         return np.array([t if t>0 else -0.1*t for t in x])
 
     def grad(self, x):
-        return np.array([0.1 if t < 0 else 1 for t in x])
+        return np.array([0.01 if t < 0 else 1 for t in x])
 
 class Identity(Activation):
     def compute(self, x):

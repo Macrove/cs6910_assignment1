@@ -1,12 +1,12 @@
+import wandb
 from nn.model import NeuralNetwork
 from utils.prepare_dataset import prepare_dataset
 from utils.preprocess import train_test_split
-from params.default_params import default_dataset
 
 def main(loss_func, dataset, optimizer, n_epoch, n_hidden_layers, size_hidden_layer, weight_decay, batch_size, weight_initialization, activation_func, use_wandb):
 
 
-    x_train, y_train, y_train_enc, x_test, y_test, y_test_enc, label_dict = prepare_dataset(dataset, normalize = True)
+    x_train, y_train, y_train_enc, x_test, y_test, y_test_enc, label_dict = prepare_dataset(dataset, normalize = False, standardize=True)
     
     #splitting dataset
     x_train_, y_train_, x_val_, y_val_ = train_test_split(x_train, y_train_enc, 0.1)
@@ -38,3 +38,13 @@ def main(loss_func, dataset, optimizer, n_epoch, n_hidden_layers, size_hidden_la
                     n_epoch=n_epoch, shuffle=True, optimizer=optimizer["name"],
                     optimizer_params=optimizer["default_params"], initialization=weight_initialization, decay=weight_decay, use_wandb=use_wandb)
     nn.fit()
+
+    y_pred = nn.predict(x_test)
+    if use_wandb:
+        class_names = []
+        for key in label_dict.keys():
+            class_names.append(label_dict[key])
+        wandb.log({"confusion_matrix" : wandb.plot.confusion_matrix(
+                        y_true=y_test, preds=y_pred,
+                        class_names=class_names)})
+
