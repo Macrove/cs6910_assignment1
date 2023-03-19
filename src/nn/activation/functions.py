@@ -1,9 +1,7 @@
 import numpy as np
+from nn.activation.template import Activation
 
-class Sigmoid():
-    def __init__(self):
-        pass
-    
+class Sigmoid(Activation):
     def compute(self, x):
         return 1/(1+np.exp(-1 * x))
 
@@ -11,44 +9,39 @@ class Sigmoid():
         comp_x = self.compute(x)
         return comp_x * (1 - comp_x)
 
-class Softmax():
-    def __init__(self):
-        pass
-    
+class Softmax(Activation):
     def compute(self, x):
+        x -= np.max(x)
         terms = np.exp(x)
         return terms/np.sum(terms)
     
     def grad(self, x):
         pass
     
-class Tanh():
-    def __init__(self):
-        pass
-
+class Tanh(Activation):
     def compute(self, x):
         terms = np.exp(x)
         return (terms - 1/terms)/(terms + 1/terms)
 
     def grad(self, x):
-        comp_x = self.compute(x)
-        return 1 - np.power(comp_x, 2)
+        return 1 - np.power(self.compute(x), 2)
 
 
-class ReLu():
-    def __init__(self):
-        pass
-    
+class ReLu(Activation):
     def compute(self, x):
         return np.array([t if t>0 else 0 for t in x])
 
     def grad(self, x):
         return np.array([0 if t < 0 else 1 for t in x])
 
-class Identity():
-    def __init__(self) -> None:
-        pass
+class LeakyReLu(Activation):
+    def compute(self, x):
+        return np.array([t if t>0 else -0.1*t for t in x])
 
+    def grad(self, x):
+        return np.array([0.01 if t < 0 else 1 for t in x])
+
+class Identity(Activation):
     def compute(self, x):
         return x
 

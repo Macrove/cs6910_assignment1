@@ -1,15 +1,10 @@
 import numpy as np
+from nn.optimizer.template import Optimizer
 
-class Sgd():
+class Sgd(Optimizer):
     def __init__(self, eta=0.00001):
         self.eta = eta
 
-    def set_params(self, params):
-        for key in params:
-            setattr(self, key, params[key])
-        
-        self.reset()
-        
     def get_params(self):
         return {
             "eta": self.eta
@@ -25,16 +20,11 @@ class Sgd():
         return w_new, b_new
 
 
-class Momentum():
+class Momentum(Optimizer):
     def __init__(self, eta=0.0001, gamma=0.001):
         self.eta = eta
         self.gamma = gamma
 
-    def set_params(self, params):
-        for key in params:
-            setattr(self, key, params[key])
-        self.reset()
-        
     def get_params(self):
         return {
             "eta": self.eta,
@@ -51,22 +41,17 @@ class Momentum():
         w_new_update = self.gamma * self.w_prev_update + self.eta * self.del_w
         b_new_update = self.gamma * self.b_prev_update + self.eta * self.del_b
         w_new = w - w_new_update
-        b_new = b_new_update
+        b_new = b - b_new_update
         self.w_prev_update = w_new_update
         self.b_prev_update = b_new_update
         return w_new, b_new
 
 
-class Nag():
+class Nag(Optimizer):
     def __init__(self, eta=0.0001, gamma=0.001):
         self.eta = eta
         self.gamma = gamma
 
-    def set_params(self, params):
-        for key in params:
-            setattr(self, key, params[key])
-        self.reset()
-        
     def get_params(self):
         return {
             "eta": self.eta,
@@ -88,26 +73,24 @@ class Nag():
         w_new = w - w_new_update
         b_new = b - b_new_update
 
-        w_look_ahead = w_new - self.gamma * w_new_update
-        b_look_ahead = b_new - self.gamma * b_new_update
-
         self.w_prev_update = w_new_update
         self.b_prev_update = b_new_update
 
+        return w_new, b_new
+
+    def get_partial_update(self, w, b):
+        w_look_ahead = w - self.gamma * self.w_prev_update
+        b_look_ahead = b - self.gamma * self.b_prev_update
+
         return w_look_ahead, b_look_ahead
+        
 
-
-class Rmsprop():
+class Rmsprop(Optimizer):
     def __init__(self, eta=0.0001, beta=0.9, epsilon=0.001):
         self.eta = eta
         self.beta = beta
         self.epsilon = epsilon
 
-    def set_params(self, params):
-        for key in params:
-            setattr(self, key, params[key])
-        self.reset()
-        
     def get_params(self):
         return {
             "eta": self.eta,
@@ -133,18 +116,14 @@ class Rmsprop():
         return w_new, b_new
 
 
-class Adam():
+class Adam(Optimizer):
     def __init__(self, eta=0.0001, beta1=0.5, beta2=0.5, epsilon=0.001):
         self.eta = eta
         self.beta1 = beta1
         self.beta2 = beta2
         self.epsilon = epsilon
+        self.t = 0
 
-    def set_params(self, params):
-        for key in params:
-            setattr(self, key, params[key])
-        self.reset()
-        
     def get_params(self):
         return {
             "eta": self.eta,
@@ -191,18 +170,13 @@ class Adam():
         return w_new, b_new
 
 
-class Nadam():
-    def __init__(self, eta=0.0001, beta1=0.5, beta2=0.5, epsilon=0.001):
+class Nadam(Optimizer):
+    def __init__(self, eta=0.0001, beta1=0.5, beta2=0.5, epsilon=1e-8):
         self.eta = eta
         self.beta1 = beta1
         self.beta2 = beta2
         self.epsilon = epsilon
 
-    def set_params(self, params):
-        for key in params:
-            setattr(self, key, params[key])
-        self.reset()
-        
     def get_params(self):
         return {
             "eta": self.eta,
