@@ -1,11 +1,21 @@
 # Assignment Repository for CS6910
 
-## Branch Workflow
-<img
-  src="./utils/git-branch-workflow.png" 
-  alt="branch workflow" 
-  style="display: inline-block; margin: 0 auto; max-width: 600px"> 
- 
+This repository contains all the code related to assignment 1 of cs6910
+
+Description of folders
+- src contains all source code
+- nn folder contains all the code related to neural network
+- It also contains folder with different classes of activation function, optimizers, losses etc
+
+### Executable files
+- main.py - this file calls and trains the neural network
+- train.py -
+  -- this file calls the main function from main.py and passes all the arguments parsed from the command line
+  -- Just running train.py file will call the default arguments which are set for best hyperparameters
+  -- script_cmd.txt contains sample command that can be supplied as command line argument to train.py
+- q4_sweep.py also calls main function from main.py to run wandb sweeps
+
+## Branch Workflow 
   ### Description 
   - main: Final submission will be done via this branch.  
   - dev: Once the features/questions are completed, they will be merged to this branch. 
