@@ -31,4 +31,4 @@ def plot_and_log_images(X, y, label_dict, use_wandb=False):
 
 x_train, y_train, y_train_enc, x_test, y_test, y_test_enc, label_dict = prepare_dataset()
 
-plot_and_log_images(x_train, y_train, label_dict, use_wandb=False)
+plot_and_log_images(x_train, y_train, label_dict, use_wandb=True)

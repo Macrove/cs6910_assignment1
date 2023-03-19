@@ -1,0 +1,1 @@
+-wp cs6910-assignment-1 -we me19b110 -d fashion_mnist -e 8 -b 32 -l cross_entropy -o sgd -lr 0.001 -m 0.5 -beta 0.5 -beta1 0.5 -beta2 0.5 -eps 0.000001 -w_d 0 -w_i random -nhl 3 -sz 64 -a sigmoid -wb 0
