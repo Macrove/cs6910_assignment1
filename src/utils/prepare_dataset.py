@@ -1,11 +1,15 @@
 import numpy as np
-from keras.datasets import fashion_mnist
+from keras.datasets import fashion_mnist, mnist
+from utils.preprocess import normalize_data, standardize_data
 
 # function to prepare dataset
-def prepare_dataset():
+def prepare_dataset(dataset_type: str, normalize: bool = False, standardize:bool = False):
     
-    print("Downloading Fashion MNIST dataset:", end=" ")
-    (x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
+    print("Downloading {} dataset:".format(dataset_type.upper()), end=" ")
+    if dataset_type == "fashion_mnist":
+        (x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
+    elif dataset_type == "mnist":
+        (x_train, y_train), (x_test, y_test) = mnist.load_data()
     print("done")
 
     print("Samples in training data:\t", x_train.shape[0])
@@ -39,6 +43,15 @@ def prepare_dataset():
         
     for idx, lbl in enumerate(y_test):
         y_test_enc[idx][lbl] = 1 
+
+    if normalize:
+        #normalization
+        x_train = normalize_data(x_train, vmin=0, vmax=255)
+        x_test = normalize_data(x_test, vmin=0, vmax=255)
+
+    elif standardize:
+        x_train = standardize_data(x_train)
+        x_test = standardize_data(x_test)
 
     print("Dataset Prepared")
     return x_train, y_train, y_train_enc, x_test, y_test, y_test_enc, label_dict
