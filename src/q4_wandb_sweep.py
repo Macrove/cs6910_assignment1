@@ -30,14 +30,14 @@ sweep_configuration = {
     "early_terminate": {
         "type": "hyperband",
         "eta": 2,
-        "min_iter": 5
+        "min_iter": 3
      },
     "parameters": {
         'n_epoch': {'values': [8, 9, 10, 11, 12]},
         'n_hidden_layers': {'values': [2, 3, 4, 5]},
         'size_hidden_layer': {'values': [1, 4, 32, 64, 128]},
-        'weight_decay': {'values': [0, 1e-7, 1e-8, 1e-9]},
-        'eta': {'values': [1e-7, 1e-6, 1e-5, 1e-4]},
+        'weight_decay': {'values': [0, 1e-4, 1e-5, 1e-6, 1e-7, 1e-8, 1e-9]},
+        'eta': {'values': [1e-5, 1e-4, 1e-3, 1e-2, 1e-6]},
         'optimizer': {'values' :['sgd', 'momentum', 'nag', 'rmsprop', 'adam', 'nadam']},
         'batch_size': {'values': [16, 32, 64, 128]},
         'weight_initialization': {'values': ['random', 'Xavier']},
@@ -52,7 +52,7 @@ sweep_configuration = {
 }
 
 sweep_id = wandb.sweep(sweep=sweep_configuration, project="cs6910-assignment-1", entity="me19b110")
-wandb.agent(sweep_id=sweep_id, function=run_sweeps, count=40)
+wandb.agent(sweep_id=sweep_id, function=run_sweeps, count=2)
 
 ##########################################################################################################
 # code for optimizer wise sweeps
@@ -60,7 +60,7 @@ wandb.agent(sweep_id=sweep_id, function=run_sweeps, count=40)
 # sweep_configuration_map = {
 #     "nadam": {
 #         "name": "nadam_sweep",
-#         "method": "bayes",
+#         "method": "random",
 #         "metric": {'goal': 'maximize', 'name': 'val_acc'},
 #         "early_terminate": {
 #             "type": "hyperband",
@@ -68,20 +68,20 @@ wandb.agent(sweep_id=sweep_id, function=run_sweeps, count=40)
 #             "min_iter": 5
 #         },
 #         "parameters": {
-#             'n_epoch': {'values': [8, 9, 10, 11, 12, 13, 14]},
-#             'n_hidden_layers': {'values': [2, 3, 4, 5]},
-#             'size_hidden_layer': {'values': [32, 64, 128]},
+#             'n_epoch': {'values': [10, 11, 12, 13, 14]},
+#             'n_hidden_layers': {'values': [2, 3, 4]},
+#             'size_hidden_layer': {'values': [128]},
 #             'weight_decay': {'values': [1e-7, 1e-8, 1e-9]},
-#             'eta': {'min': 1 * 1e-6, 'max': 1 * 1e-4},
+#             'eta': {'min': 8 * 1e-5, 'max': 1 * 1e-3},
 #             'optimizer': {'values' :['adam']},
 #             'batch_size': {'values': [16, 32, 64, 128]},
 #             'weight_initialization': {'values': ['Xavier']},
 #             'activation_func': {'values': ['LeakyReLU', 'ReLU']},
 #             'beta': {'min': 0.5, 'max': 0.8},
-#             'beta1': {'min': 0.6, 'max': 0.8},
-#             'beta2': {'min': 0.7, 'max': 0.9},
-#             'epsilon': {'min': 1e-10, 'max': 1e-6},
-#             'gamma': {'min': 1e-8, 'max': 1e-5},
+#             'beta1': {'min': 0.7, 'max': 0.8},
+#             'beta2': {'min': 0.8, 'max': 0.95},
+#             'epsilon': {'values': [1e-10]},
+#             'gamma': {'values': [1e-5]},
 #             'loss': {'values': ['cross_entropy']}
 #         }
 #     },
@@ -176,7 +176,7 @@ wandb.agent(sweep_id=sweep_id, function=run_sweeps, count=40)
 #             "min_iter": 5
 #         },
 #         "parameters": {
-#             'n_epoch': {'values': [12, 13, 14]},
+#             'n_epoch': {'values': [8, 9, 10, 11]},
 #             'n_hidden_layers': {'values': [2, 3, 4]},
 #             'size_hidden_layer': {'values': [32, 64, 128]},
 #             'weight_decay': {'values': [0, 1e-6, 1e-7, 1e-8, 1e-9]},
@@ -189,7 +189,7 @@ wandb.agent(sweep_id=sweep_id, function=run_sweeps, count=40)
 #             'beta1': {'min': 0.5, 'max': 0.9},
 #             'beta2': {'min': 0.7, 'max': 0.99},
 #             'epsilon': {'min': 1e-10, 'max': 1e-6},
-#             'gamma': {'min': 1e-8, 'max': 1e-5},
+#             'gamma': {'values': [1e-1, 1e-2, 1e-3]},
 #             'loss': {'values': ['cross_entropy']}
 #         }
 #     },
@@ -221,7 +221,10 @@ wandb.agent(sweep_id=sweep_id, function=run_sweeps, count=40)
 #         }
 #     },
 # }
+
+# sweep_id = wandb.sweep(sweep=sweep_configuration_map["nadam"], project="cs6910-assignment-1", entity="me19b110")
+# wandb.agent(sweep_id=sweep_id, function=run_sweeps, count=5)
 # for key in sweep_configuration_map.keys():
-#     sweep_id = wandb.sweep(sweep=sweep_configuration_map[key], project="cs6910-assignment-1", entity="me19b110"V)
+#     sweep_id = wandb.sweep(sweep=sweep_configuration_map[key], project="cs6910-assignment-1", entity="me19b110")
 #     wandb.agent(sweep_id=sweep_id, function=run_sweeps, count=20)
 

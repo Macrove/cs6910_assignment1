@@ -9,10 +9,11 @@ class CrossEntropyLoss():
 
 class SquaredErrorLoss():
     def compute(self, y, probabs):
-        return np.sum(np.power((y - probabs), 2) / y.shape[0])
+        return np.sum(np.power((y - probabs), 2))/2
 
     def grad_wrt_a(self, y, probabs):
-        return -np.power((y - probabs), 2) * np.max(probabs) / probabs.shape[0]
+        terms = probabs * (probabs - y)
+        return -probabs * np.sum(terms) + probabs * terms
 
     
         

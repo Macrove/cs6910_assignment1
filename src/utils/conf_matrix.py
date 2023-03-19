@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import wandb
 
-def confusion_matrix(y_pred, y, title, use_wandb):
+def confusion_matrix(y_pred, y, title, class_names):
     y_pred = np.array(y_pred, dtype=np.int64)
     y = np.array(y, dtype=np.int64)
     classes = np.unique(y)
@@ -15,8 +15,8 @@ def confusion_matrix(y_pred, y, title, use_wandb):
     fig, ax = plt.subplots()
     im = ax.imshow(conf_mat)
 
-    ax.set_yticks(classes, labels = classes)
-    ax.set_xticks(classes, labels = classes)
+    ax.set_yticks(classes, labels = class_names)
+    ax.set_xticks(classes, labels = class_names)
 
     for i in range(classes.shape[0]):
         for j in range(classes.shape[0]):
@@ -26,6 +26,7 @@ def confusion_matrix(y_pred, y, title, use_wandb):
     ax.set_title(title_text)
     fig.tight_layout()
     plt.savefig(title_text)
-    plt.show()
+    plt.xlabel("Predictions")
+    plt.ylabel("True")
     return conf_mat
             

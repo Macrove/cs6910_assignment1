@@ -1,9 +1,9 @@
 default_model_params = {
     "optimizer" : "nadam",
-    "n_epoch" : 15,
-    "n_hidden_layers" : 4,
-    "size_hidden_layer" : 264,
-    "weight_decay" : 1e-9,
+    "n_epoch" : 10,
+    "n_hidden_layers" : 3,
+    "size_hidden_layer" : 128,
+    "weight_decay" : 0,
     "batch_size" : 32,
     "weight_initialization" : "Xavier",
     "activation_func" : "LeakyReLU",
@@ -58,9 +58,9 @@ optimizer_param_map = {
     "nadam" : {
         "name": "nadam",
         "default_params": {
-            "eta" : 0.000062,
+            "eta" : 0.00008,
             "beta1": 0.7803,
-            "beta2": 0.895,
+            "beta2": 0.89504,
             "epsilon": 1e-9
         }
     }

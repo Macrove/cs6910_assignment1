@@ -31,7 +31,7 @@ parser.add_argument("-w_i", "--weight_init", choices=parser_choices["initializat
 parser.add_argument("-nhl", "--num_layers", default=default_model_params["n_hidden_layers"], type=int)
 parser.add_argument("-sz", "--hidden_size", default=default_model_params["size_hidden_layer"], type=int)
 parser.add_argument("-a", "--activation", choices=parser_choices["activation"], default=default_model_params["activation_func"])
-parser.add_argument("-wb", "--use_wandb", choices=[0, 1], default=1, type=int)
+parser.add_argument("-wb", "--use_wandb", choices=[0, 1], default=0, type=int)
 
 args = parser.parse_args()
 
@@ -59,5 +59,6 @@ use_wandb = args.use_wandb
 if use_wandb:
     run = wandb.init(project=args.wandb_project, entity=args.wandb_entity)
     run.name = "hl_{}_bs_{}_ac_{}_opt_{}".format(args.num_layers, args.batch_size, args.activation, args.optimizer)
+    run.log_code()
 
 main(loss_func, dataset, optimizer, n_epoch, n_hidden_layers, size_hidden_layer, weight_decay, batch_size, weight_initialization, activation_func, use_wandb)

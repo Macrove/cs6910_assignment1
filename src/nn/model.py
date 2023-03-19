@@ -1,3 +1,4 @@
+import math
 import numpy as np
 from nn.layer.layer import Input_layer, Hidden_layer, Output_layer
 from copy import deepcopy
@@ -147,6 +148,9 @@ class NeuralNetwork():
                     "train_loss": train_loss,
                     "val_loss": val_loss
                 })
+            
+            if math.isnan(train_loss):
+                return
 
             end = time.time()
             
