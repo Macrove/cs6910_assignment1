@@ -1,5 +1,6 @@
 import wandb
 from nn.model import NeuralNetwork
+from utils.metrics import accuracy
 from utils.prepare_dataset import prepare_dataset
 from utils.preprocess import train_test_split
 from utils.conf_matrix import confusion_matrix
@@ -41,10 +42,12 @@ def main(loss_func, dataset, optimizer, n_epoch, n_hidden_layers, size_hidden_la
     nn.fit()
 
     y_pred = nn.predict(x_test)
-    class_names = []
-    for key in label_dict.keys():
-        class_names.append(label_dict[key])
-    confusion_matrix(y_pred, y_test, "confusion matri on fasion mnist test data", class_names)
+    print("\nTEST DATA ACCURACY", accuracy(y_pred, y_test))
+    # class_names = []
+    # for key in label_dict.keys():
+    #     class_names.append(label_dict[key])
+    # confusion_matrix(y_pred, y_test, "confusion matri on fasion mnist test data", class_names)
+
     
     # if use_wandb:
     #     wandb.log({"confusion_matrix" : wandb.plot.confusion_matrix(
