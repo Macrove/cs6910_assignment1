@@ -13,7 +13,8 @@ class SquaredErrorLoss():
 
     def grad_wrt_a(self, y, probabs):
         terms = probabs * (probabs - y)
-        return -probabs * np.sum(terms) + probabs * terms
+        i = np.argmax(y)
+        return terms - np.sum(terms) * probabs
 
     
         
